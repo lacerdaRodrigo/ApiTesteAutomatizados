@@ -15,9 +15,9 @@
 
 
 const mongoose = require('mongoose');
-const username = process.env.MONGODB_USERNAME;
-const password = process.env.MONGODB_PASSWORD;
-const cluster = process.env.MONGODB_CLUSTER;
+const username = process.env.DB_USER;
+const password = process.env.DB_PASSWORD;
+const cluster = process.env.DB_CLUSTER;
 const dbName = process.env.MONGODB_DB_NAME;
 
 const uri = `mongodb+srv://${username}:${password}@${cluster}/${dbName}?retryWrites=true&w=majority&appName=Api`;
@@ -25,3 +25,4 @@ const uri = `mongodb+srv://${username}:${password}@${cluster}/${dbName}?retryWri
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('Conectado ao MongoDB Atlas'))
   .catch(err => console.error('Erro ao conectar ao MongoDB', err));
+
