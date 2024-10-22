@@ -4,8 +4,8 @@ const Pessoa = require('../../models/Pessoa');
 
 router.patch('/:id', async (req, res) => {
     const id = req.params.id;
-    const { name, salary, approved } = req.body;
-    const pessoaUpdate = { name, salary, approved };
+    const { name, salary, phone,profession, approved } = req.body;
+    const pessoaUpdate = { name, salary, phone,profession, approved };
 
     try {
         const updatepessoa = await Pessoa.updateOne({ _id: id }, pessoaUpdate);

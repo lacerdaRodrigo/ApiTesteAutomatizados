@@ -4,6 +4,7 @@ const pessoaSchema = new mongoose.Schema({
     name: String,
     salary: Number,
     phone: Number,
+    profession: String,
     approved: Boolean
 });
 
