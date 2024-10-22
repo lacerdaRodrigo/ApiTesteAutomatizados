@@ -3,13 +3,13 @@ const router = express.Router();
 const Pessoa = require('../../models/Pessoa');
 
 router.post('/', async (req, res) => {
-    const { name, salary,phone, approved } = req.body;
+    const { name, salary, phone,profession, approved } = req.body;
 
     if (!name) {
         return res.status(422).json({ error: 'O nome é obrigatório' });
     }
 
-    const pessoa = new Pessoa({ name, salary, phone, approved });
+    const pessoa = new Pessoa({ name, salary, phone,profession, approved });
 
     try {
         await pessoa.save();
