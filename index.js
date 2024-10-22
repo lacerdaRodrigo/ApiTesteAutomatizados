@@ -12,8 +12,10 @@ app.use('/pessoa', pessoaRoutes);
 const agendamentoRoutes = require('./routes/agendamento');
 app.use('/agendamento', agendamentoRoutes);
 
-// Iniciar servidor
+// Iniciar servidor mongoDB
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+
