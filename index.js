@@ -2,15 +2,14 @@ const express = require('express');
 const app = express();
 require('./configBd/db');
 
-// Forma de ler JSON
+//json
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Rotas da API
-const pessoaRoutes = require('./routes/pessoa');
-app.use('/pessoa', pessoaRoutes);
-const agendamentoRoutes = require('./routes/agendamento');
-app.use('/agendamento', agendamentoRoutes);
+// Rotas (Routes) da API
+const UserRoutes = require('./routes/UserRoutes')
+app.use('/pessoa', UserRoutes)
+
 
 // Iniciar servidor mongoDB
 const PORT = process.env.PORT || 3000;
