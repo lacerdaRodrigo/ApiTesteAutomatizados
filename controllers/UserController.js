@@ -1,41 +1,27 @@
-const express = require('express');
-const User = require('../models/User');
-const router = express.Router();
+const User = require('../models/userModel');
 
 module.exports = class UserController {
     static async createUser(req, res) {
-             
-       const { nome, salario, telefone, profissional } = req.body;
-
-        if (!nome) {
-            return res.status(422).json({ error: 'O nome é obrigatório' });
-        }
-        if (!salario) {
-            return res.status(422).json({ error: 'O salario é obrigatório' });
-        }
-        if (!telefone) {
-            return res.status(422).json({ error: 'O telefone é obrigatório' });
-        }
-        
-        if (!profissional) {
-            return res.status(422).json({ error: 'O profissional é obrigatório' });
-        }
-    
-        const nomeExistente = await User.findOne({ nome: nome })
-        if(nomeExistente)
-        {
-           return res.status(422).json({message: "Pessoa já cadastrada"})
-        }
-    
-    
-        const user = new User({ nome, salario, telefone, profissional });
+        const { nome, telefone, email } = req.body;
         try {
+            const nomeExistente = await User.findOne({ nome });
+            if (nomeExistente) {
+                return res.status(400).json({ error: 'Nome já existe' });
+            }
+            const user = new User({ nome, telefone, email });
             await user.save();
-            res.status(201).json({ message: 'Pessoa inserida no sistema com sucesso!' });
+            res.status(201).json(user);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     }
 
-    // Adicione mais métodos conforme necessário
+    static async getUsers(req, res) {
+        try {
+            const users = await User.find();
+            res.status(200).json(users);
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    }
 };
