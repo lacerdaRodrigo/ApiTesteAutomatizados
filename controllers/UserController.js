@@ -1,5 +1,5 @@
 const express = require('express');
-const Pessoa = require('../models/Pessoa')
+const User = require('../models/User');
 const router = express.Router();
 
 module.exports = class UserController {
@@ -21,16 +21,16 @@ module.exports = class UserController {
             return res.status(422).json({ error: 'O profissional é obrigatório' });
         }
     
-        const nomeExistente = await Pessoa.findOne({ nome: nome })
+        const nomeExistente = await User.findOne({ nome: nome })
         if(nomeExistente)
         {
            return res.status(422).json({message: "Pessoa já cadastrada"})
         }
     
     
-        const pessoa = new Pessoa({ nome, salario, telefone, profissional });
+        const user = new User({ nome, salario, telefone, profissional });
         try {
-            await pessoa.save();
+            await user.save();
             res.status(201).json({ message: 'Pessoa inserida no sistema com sucesso!' });
         } catch (error) {
             res.status(500).json({ error: error.message });
