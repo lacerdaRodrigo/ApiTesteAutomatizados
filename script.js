@@ -20,4 +20,19 @@ document.getElementById('createUserForm').addEventListener('submit', async (even
     }
 });
 
-document.getElementById('deleteUserForm').addEventListener('submit', async (event) => { event.preventDefault(); const nome = event.target.nomeDelete.value; console.log('Nome to delete:', nome); try { const response = await fetch(`http://localhost:5000/users/${nome}`, { method: 'DELETE' }); const result = await response.json(); console.log('Usuário deletado:', result); alert('Usuário deletado com sucesso!'); } catch (error) { console.error('Erro ao deletar usuário:', error); alert('Erro ao deletar usuário.'); } });
+document.getElementById('deleteUserForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const nome = event.target.nomeDelete.value;
+  console.log('Nome to delete:', nome);
+  try {
+      const response = await fetch(`https://api-teste-automatizados-0cb0fdf20c5b.herokuapp.com/users/${nome}`, {
+          method: 'DELETE'
+      });
+      const result = await response.json();
+      console.log('Usuário deletado:', result);
+      alert('Usuário deletado com sucesso!');
+  } catch (error) {
+      console.error('Erro ao deletar usuário:', error);
+      alert('Erro ao deletar usuário.');
+  }
+});
