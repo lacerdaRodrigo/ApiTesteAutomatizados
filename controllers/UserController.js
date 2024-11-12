@@ -2,13 +2,13 @@ const User = require('../models/userModel');
 
 module.exports = class UserController {
     static async createUser(req, res) {
-        const { nome, telefone, email } = req.body;
+        const { nome, funcao, salario } = req.body;
         try {
             const nomeExistente = await User.findOne({ nome });
             if (nomeExistente) {
                 return res.status(400).json({ error: 'Nome já existe' });
             }
-            const user = new User({ nome, telefone, email });
+            const user = new User({ nome, funcao, salario });
             await user.save();
             res.status(201).json(user);
         } catch (error) {

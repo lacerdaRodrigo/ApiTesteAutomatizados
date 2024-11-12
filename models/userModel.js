@@ -6,11 +6,11 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    telefone: {
+    funcao: {
         type: String,
         required: true
     },
-    email: {
+    salario: {
         type: String,
         required: true
     }
