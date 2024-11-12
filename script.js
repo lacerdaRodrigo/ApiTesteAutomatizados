@@ -1,3 +1,6 @@
+const webUrl = "https://api-teste-automatizados-0cb0fdf20c5b.herokuapp.com/users/register"
+
+
 document.getElementById('createUserForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     const data = {
@@ -6,7 +9,7 @@ document.getElementById('createUserForm').addEventListener('submit', async (even
       salario: event.target.salario.value
     };
     try {
-      const response = await fetch('https://api-teste-automatizados-0cb0fdf20c5b.herokuapp.com/users/register', {
+      const response = await fetch(webUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(data)
