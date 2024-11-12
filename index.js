@@ -4,7 +4,7 @@ const app = express();
 require('./configBd/db');
 
 app.use(express.json());
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
+app.use(cors({ origin: '*' }));
 
 const userRoutes = require('./routes/UserRoutes');
 app.use('/users', userRoutes);
