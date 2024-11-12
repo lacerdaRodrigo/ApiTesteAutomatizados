@@ -1,4 +1,5 @@
-const webUrl = "https://api-teste-automatizados-0cb0fdf20c5b.herokuapp.com/users/register"
+const webUrl = "https://api-teste-automatizados-0cb0fdf20c5b.herokuapp.com/users/register";
+const urlLocal = "https://api-teste-automatizados-0cb0fdf20c5b.herokuapp.com/users/";
 
 
 document.getElementById('createUserForm').addEventListener('submit', async (event) => {
@@ -9,7 +10,7 @@ document.getElementById('createUserForm').addEventListener('submit', async (even
       salario: event.target.salario.value
     };
     try {
-      const response = await fetch(webUrl, {
+      const response = await fetch(`${webUrl}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify(data)
@@ -28,7 +29,7 @@ document.getElementById('deleteUserForm').addEventListener('submit', async (even
   const nome = event.target.nomeDelete.value;
   console.log('Nome to delete:', nome);
   try {
-      const response = await fetch(`https://api-teste-automatizados-0cb0fdf20c5b.herokuapp.com/users/${nome}`, {
+      const response = await fetch(`${urlLocal}${nome}`, {
           method: 'DELETE'
       });
       const result = await response.json();
