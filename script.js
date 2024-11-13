@@ -8,20 +8,27 @@ const urlApiLocalDelete = "http://localhost:5000/users/";
 const urlApiLocalUpdate = "http://localhost:5000/users/update-name/";
 const urlApiLocalGet = "http://localhost:5000/users";
 
-
+//Post
 document.getElementById('createUserForm').addEventListener('submit', async (event) => {
   event.preventDefault();
   const data = {
     nome: event.target.nome.value,
     funcao: event.target.funcao.value,
-    salario: event.target.salario.value
+    salario: event.target.salario.value,
+    email: event.target.email.value,
+    empresa: event.target.empresa.value
   };
 
-  if (data.nome === data.funcao)
-  {
+  if (data.nome === data.funcao) {
     alert('Nome não pode ser igual a função');
     return;
   }
+  // if (!empresa) {
+  //   alert('o Campo "Empresa" e obrigatorio')
+  //   return;
+  // }
+  // console.log('Empresa preenchida:', empresa);
+
 
   try {
     const response = await fetch(`${urlApiLocalPost}`,
@@ -40,6 +47,7 @@ document.getElementById('createUserForm').addEventListener('submit', async (even
   }
 });
 
+//Delete
 document.getElementById('deleteUserForm').addEventListener('submit', async (event) => {
   event.preventDefault();
   const nome = event.target.nomeDelete.value;
@@ -57,7 +65,7 @@ document.getElementById('deleteUserForm').addEventListener('submit', async (even
   }
 });
 
-
+//Path (Update)
 document.getElementById('updateUserForm').addEventListener('submit', async (event) => {
   event.preventDefault();
   const currentName = event.target.nomeAtual.value;
@@ -90,7 +98,9 @@ async function fetchUsers() {
       listItem.textContent = `
       Nome: ${user.nome}, 
       Função: ${user.funcao}, 
-      Salário: ${user.salario}`;
+      Salário: ${user.salario},
+      Email: ${user.email},
+      Empresa: ${user.empresa}`
       userList.appendChild(listItem);
     });
 

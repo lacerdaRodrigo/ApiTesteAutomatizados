@@ -13,6 +13,14 @@ const userSchema = new Schema({
     salario: {
         type: String,
         required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    empresa: {
+        type: String,
+        required: true
     }
     
 });
