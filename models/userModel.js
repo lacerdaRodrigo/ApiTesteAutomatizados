@@ -6,20 +6,16 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    funcao: {
-        type: String,
-        required: true
-    },
-    salario: {
-        type: String,
+    telefone: {
+        type: Number,
         required: true
     },
     email: {
         type: String,
         required: true
     },
-    empresa: {
-        type: String,
+    dataNas: {
+        type: Number,
         required: true
     }
     

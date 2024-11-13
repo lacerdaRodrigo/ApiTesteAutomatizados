@@ -13,16 +13,16 @@ document.getElementById('createUserForm').addEventListener('submit', async (even
   event.preventDefault();
   const data = {
     nome: event.target.nome.value,
-    funcao: event.target.funcao.value,
-    salario: event.target.salario.value,
+    telefone: event.target.telefone.value,
+    dataNas: event.target.dataNas.value,
     email: event.target.email.value,
-    empresa: event.target.empresa.value
+    
   };
 
-  if (data.nome === data.funcao) {
-    alert('Nome não pode ser igual a função');
-    return;
-  }
+  // if (data.nome === data.funcao) {
+  //   alert('Nome não pode ser igual a função');
+  //   return;
+  // }
   // if (!empresa) {
   //   alert('o Campo "Empresa" e obrigatorio')
   //   return;

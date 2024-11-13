@@ -2,20 +2,14 @@ const User = require('../models/userModel');
 
 module.exports = class UserController {
     static async createUser(req, res) {
-        const { nome, funcao, salario , email, empresa } = req.body;
+        const { nome, telefone, email, dataNas } = req.body;
         try {
             const nomeExistente = await User.findOne({ nome });
             if (nomeExistente) {
                 return res.status(400).json({ error: 'Nome já existe' });
             }
 
-            if (nome == funcao){
-                return res.status(400).json({ error: 'Nome não pode ser mesmo que função'})
-            }
-
-   
-
-            const user = new User({ nome, funcao, salario, email, empresa });
+            const user = new User({  nome, telefone, email, dataNas });
             await user.save();
             res.status(201).json(user);
         } catch (error) {

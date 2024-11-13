@@ -15,7 +15,7 @@
         </header>
 
         <section>
-            <h2>Criar Usuário</h2>
+            <h2>Cliente</h2>
             <form id="createUserForm">
                 <div class="form-group">
                     <label for="nome">Nome:</label>
@@ -23,13 +23,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="funcao">Função:</label>
-                    <input type="text" id="funcao" name="funcao" required>
+                    <label for="Telefone">Telefone:</label>
+                    <input type="number" id="telefone" name="telefone" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="salario">Salário:</label>
-                    <input type="number" id="salario" name="salario" required>
+                    <label for="dataNas">Data Nascimento:</label>
+                    <input type="number" id="dataNas" name="dataNas" required>
                 </div>
 
                 <div class="form-group">
@@ -37,17 +37,12 @@
                     <input type="email" id="email" name="email" required>
                 </div>
 
-                <div class="form-group">
-                    <label for="empresa">Empresa:</label>
-                    <input type="text" id="empresa" name="empresa" required>
-                </div>
-
-                <button type="submit">Criar Usuário</button>
+                <button type="submit">Criar Cliente</button>
             </form>
         </section>
 
         <section>
-            <h2>Editar Usuário</h2>
+            <h2>Editar Cliente</h2>
             <form id="updateUserForm">
                 <div class="form-group">
                     <label for="nomeAtual">Nome Atual:</label>
@@ -59,18 +54,18 @@
                     <input type="text" id="novoNome" name="novoNome" required>
                 </div>
 
-                <button type="submit">Atualizar Usuário</button>
+                <button type="submit">Atualizar Cliente</button>
             </form>
         </section>
 
         <section>
-            <h2>Deletar Usuário</h2>
+            <h2>Deletar Cliente</h2>
             <form id="deleteUserForm">
                 <div class="form-group">
                     <label for="nomeDelete">Nome:</label>
                     <input type="text" id="nomeDelete" name="nomeDelete" required>
                 </div>
-                <button type="submit">Deletar Usuário</button>
+                <button type="submit">Deletar Cliente</button>
             </form>
         </section>
 
@@ -81,18 +76,6 @@
     </div>
 
     <script src="script.js"></script>
-    <!-- <script>
-        function verificarEmpresa(){
-            const empresa = document.getElementById('empresa').value;
-
-            if (!empresa){
-                alert('O campo "Empresa" é obrigatório.');
-                return;
-            }
-            console.log('Empresa preenchida:', empresa);
-            alert('Campo "Empresa" foi preenchido com sucesso!');
-        }
-    </script> -->
 </body>
 
 </html>
