@@ -1,62 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gerenciamento de Usuários</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Usuários</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <body>
-  <h1>Gerenciamento de Usuários</h1>
+    <div class="container mt-5">
+        <header class="text-center mb-4">
+            <h1>Gerenciamento de Usuários</h1>
+        </header>
 
-  <section>
-    <h2>Criar Usuário</h2>
-    <form id="createUserForm">
-      <label for="nome">Nome:</label>
-      <input type="text" id="nome" name="nome" required>
+        <section class="mb-4">
+            <h2><i class="fas fa-user-plus"></i> Criar Usuário</h2>
+            <form id="createUserForm">
+                <div class="form-group">
+                    <label for="nome">Nome:</label>
+                    <div class="w-75">
+                        <input type="text" id="nome" name="nome" class="form-control" required>
+                    </div>
+                </div>
 
-      <label for="funcao">Função:</label>
-      <input type="text" id="funcao" name="funcao" required>
+                <div class="form-group">
+                    <label for="funcao">Função:</label>
+                    <div class="w-75">
+                        <input type="text" id="funcao" name="funcao" class="form-control" required>
+                    </div>
+                </div>
 
-      <label for="salario">Salário:</label>
-      <input type="number" id="salario" name="salario" required>
+                <div class="form-group">
+                    <label for="salario">Salário:</label>
+                    <div class="w-75">
+                        <input type="number" id="salario" name="salario" class="form-control" required>
+                    </div>
+                </div>
 
-      <button type="submit">Criar Usuário</button>
-    </form>
-  </section>
+                <button type="submit" class="btn btn-primary">Criar Usuário</button>
+            </form>
+        </section>
 
-  <section>
-    <h2>Editar Usuário</h2>
-    <form id="updateUserForm">
-      <label for="nomeAtual">Nome Atual:</label>
-      <input type="text" id="nomeAtual" name="nomeAtual" required>
+        <section class="mb-4">
+            <h2><i class="fas fa-user-edit"></i> Editar Usuário</h2>
+            <form id="updateUserForm">
+                <div class="form-group">
+                    <label for="nomeAtual">Nome Atual:</label>
+                    <div class="w-75">
+                        <input type="text" id="nomeAtual" name="nomeAtual" class="form-control" required>
+                    </div>
+                </div>
 
-      <label for="novoNome">Novo Nome:</label>
-      <input type="text" id="novoNome" name="novoNome" required>
+                <div class="form-group">
+                    <label for="novoNome">Novo Nome:</label>
+                    <div class="w-75">
+                        <input type="text" id="novoNome" name="novoNome" class="form-control" required>
+                    </div>
+                </div>
 
-      <button type="submit">Atualizar Usuário</button>
-    </form>
-  </section>
+                <button type="submit" class="btn btn-primary">Atualizar Usuário</button>
+            </form>
+        </section>
 
+        <section class="mb-4">
+            <h2><i class="fas fa-user-times"></i> Deletar Usuário</h2>
+            <form id="deleteUserForm">
+                <div class="form-group">
+                    <label for="nomeDelete">Nome:</label>
+                    <div class="w-75">
+                        <input type="text" id="nomeDelete" name="nomeDelete" class="form-control" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-danger">Deletar Usuário</button>
+            </form>
+        </section>
 
-  <section>
-    <h2>Deletar Usuário</h2>
-    <form id="deleteUserForm">
-      <label for="nomeDelete">Nome:</label>
-      <input type="text" id="nomeDelete" name="nomeDelete" required>
-      <button type="submit">Deletar Usuário</button>
-    </form>
-  </section>
+        <section class="mb-4">
+            <h2><i class="fas fa-users"></i> Lista de Usuários Cadastrados</h2>
+            <ul id="userList" class="list-group"></ul>
+        </section>
+    </div>
 
-  <section>
-    <h2>Lista de Usuários Cadastrados</h2>
-    <ul id="userList"></ul>
-  </section>
-
-  <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>
