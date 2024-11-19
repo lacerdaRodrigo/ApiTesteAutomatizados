@@ -75,6 +75,51 @@
         </section>
     </div>
 
+    <div>
+        *****************************************************************************************************************************************************************
+    </div>
+
+    <section>
+        <h2>Agendamento</h2>
+        <form id="createAgendamentoForm">
+            <div class="form-group">
+                <label for="observacao">Observação:</label>
+                <input type="text" id="observacao" name="observacao" required>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <input type="text" id="status" name="status" required>
+            </div>
+
+            <div class="form-group">
+                <label for="servico">Serviço</label>
+                <input type="text" id="servico" name="servico" required>
+            </div>
+
+            <button type="submit">Criar Agendamento</button>
+        </form>
+        <div id="mensagemSucesso" style="display:none; color: green;">Agendamento criado com sucesso!</div>
+    </section>
+
+    <section>
+        <h2>Deletar Agendamento Serviço</h2>
+        <form id="deleteAgendamentoForm">
+            <div class="form-group">
+                <label for="servicoDelete">Serviço:</label>
+                <input type="text" id="servicoDelete" name="servicoDelete" required>
+            </div>
+            <button type="submit">Deletar Serviço Agendamento</button>
+        </form>
+        <div id="mensagemSucesso" style="display:none; color: green;">Agendamento Deletato com sucesso!</div>
+    </section>
+
+    <section>
+        <h2>Lista de Usuários Cadastrados</h2>
+        <ul id="agendamentoList"></ul>
+    </section>
+
+
     <script src="script.js"></script>
 </body>
 

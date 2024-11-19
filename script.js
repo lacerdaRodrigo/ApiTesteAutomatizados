@@ -7,6 +7,9 @@ const urlApiLocalPost = "http://localhost:5000/users/register";
 const urlApiLocalDelete = "http://localhost:5000/users/";
 const urlApiLocalUpdate = "http://localhost:5000/users/update-name/";
 const urlApiLocalGet = "http://localhost:5000/users";
+const urlApiLocalAgendamentoPost = "http://localhost:5000/agendamento/agendamento";
+const urlApiLocalAgendamentoDelete = "http://localhost:5000/agendamento/";
+const urlLocalAgendamentoGet = "http://localhost:5000/agendamento";
 
 //Post
 document.getElementById('createUserForm').addEventListener('submit', async (event) => {
@@ -16,19 +19,7 @@ document.getElementById('createUserForm').addEventListener('submit', async (even
     telefone: event.target.telefone.value,
     dataNas: event.target.dataNas.value,
     email: event.target.email.value,
-    
   };
-
-  // if (data.nome === data.funcao) {
-  //   alert('Nome não pode ser igual a função');
-  //   return;
-  // }
-  // if (!empresa) {
-  //   alert('o Campo "Empresa" e obrigatorio')
-  //   return;
-  // }
-  // console.log('Empresa preenchida:', empresa);
-
 
   try {
     const response = await fetch(`${urlApiLocalPost}`,
@@ -37,15 +28,88 @@ document.getElementById('createUserForm').addEventListener('submit', async (even
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
+
+
     const result = await response.json();
     console.log('Usuario criado:', result);
     location.reload();
+
 
   } catch (error) {
     console.error('Erro ao criar Usuario', error);
     alert('Erro ao criar usuario');
   }
 });
+
+// POST AGENDAMENTO
+document.getElementById('createAgendamentoForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const agendamentoInput = {
+    observacao: event.target.observacao.value,
+    status: event.target.status.value,
+    servico: event.target.servico.value
+  };
+
+  try {
+    const response = await fetch(`${urlApiLocalAgendamentoPost}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(agendamentoInput)
+    });
+
+
+
+    if (!response.ok) { throw new Error('Network response was not ok ' + response.statusText); }
+
+    const data = await response.json();
+    console.log('Agendamento criado:', data);
+
+
+    const mensagemSucesso = document.getElementById('mensagemSucesso');
+    mensagemSucesso.style.display = 'block';
+    mensagemSucesso.innerText = 'Agendamento Criado com Sucesso'
+
+    event.target.reset();
+  } catch (error) {
+    console.error('Erro ao criar agendamento:', error);
+    alert('Erro ao criar agendamento: ' + error.message);
+  }
+});
+
+// DELETE AGENDAMENTO
+document.getElementById('deleteAgendamentoForm').addEventListener('submit', async (event) => {
+  event.preventDefault();
+  const nome = event.target.servicoDelete.value;
+  console.log('Serviço Deletado com sucesso', servico);
+
+  try {
+    const response = await fetch(`${urlApiLocalAgendamentoDelete}${nome}`, {
+      method: 'DELETE'
+    });
+
+    const result = await response.json();
+    console.log('Usuario deletado com sucesso', result);
+
+    const mensagemSucesso = document.getElementById('mensagemSucesso');
+    mensagemSucesso.style.display = 'block';
+    mensagemSucesso.innerText = 'Agendamento Criado com Sucesso';
+
+    location.reload();
+  } catch (error) {
+    console.error('Erro ao deletar Serviço:', error);
+    alert('Erro ao deletar Serviço')
+  }
+});
+
+
+
+
+
+
+
+
+
 
 //Delete
 document.getElementById('deleteUserForm').addEventListener('submit', async (event) => {
@@ -64,6 +128,21 @@ document.getElementById('deleteUserForm').addEventListener('submit', async (even
     alert('Erro ao deletar usuário.');
   }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //Path (Update)
 document.getElementById('updateUserForm').addEventListener('submit', async (event) => {
@@ -86,6 +165,7 @@ document.getElementById('updateUserForm').addEventListener('submit', async (even
   }
 });
 
+//Get Cliente
 async function fetchUsers() {
   try {
     const response = await fetch(urlApiLocalGet);
@@ -109,4 +189,37 @@ async function fetchUsers() {
   }
 }
 
-window.onload = fetchUsers;
+//GET AGENDAMENTO
+async function fetchAgendamento() {
+  try {
+    const response = await fetch(urlLocalAgendamentoGet);
+    const agendamentos = await response.json();  // Corrigi o nome da variável para 'agendamentos'
+    const agendamentoList = document.getElementById('agendamentoList');  // Corrigi o nome da variável para 'agendamentoList'
+    agendamentoList.innerHTML = '';  // Certifique-se de limpar a lista antes de preenchê-la
+
+    agendamentos.forEach(agendamento => {
+      const listItem = document.createElement('li');
+      listItem.textContent = `
+      Observação: ${agendamento.observacao},
+      Status: ${agendamento.status},
+      Serviço: ${agendamento.servico}`;
+      agendamentoList.appendChild(listItem);  // Certifique-se de adicionar o item à lista correta
+    });
+  } catch (error) {
+    console.error('Erro ao buscar Serviço', error);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+window.addEventListener('load', () => {
+  fetchAgendamento();
+  fetchUsers();
+});
