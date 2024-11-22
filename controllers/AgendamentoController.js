@@ -26,6 +26,17 @@ function isValidDate(data) {
            date.getFullYear() === parseInt(year);
 }
 
+// Função para formatar a data no formato ddMMyyyy para a saída
+function formatDateOutput(date) {
+    if (!(date instanceof Date) || isNaN(date)) {
+        return null; // Retorna null se a data não for válida
+    }
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Mês em JavaScript é zero-indexado
+    const year = date.getFullYear();
+    return `${day}${month}${year}`;
+}
+
 module.exports = class AgendamentoController {
     static async createAgendamento(req, res) {
         const { observacao, status, servico, clienteNome, data, horario } = req.body;
@@ -59,7 +70,14 @@ module.exports = class AgendamentoController {
     static async getAgendamentos(req, res) {
         try {
             const agendamentos = await Agendamento.find();
-            res.status(200).json(agendamentos);
+            // Formatar a data de cada agendamento antes de enviar a resposta
+            const formattedAgendamentos = agendamentos.map(agendamento => {
+                return {
+                    ...agendamento._doc,
+                    data: formatDateOutput(new Date(agendamento.data)) // Certifica-se de que a data é um objeto Date
+                };
+            });
+            res.status(200).json(formattedAgendamentos);
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
