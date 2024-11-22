@@ -5,7 +5,7 @@ const userSchema = new Schema({
     nome: {type: String,required: true},
     telefone: {type: Number,required: true},
     email: {type: String,required: true},
-    dataNas: {type: Number,required: true}
+    dataNas: {type: String,required: true}
     
 });
 

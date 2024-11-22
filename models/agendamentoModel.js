@@ -1,11 +1,13 @@
-const mongoose =  require('mongoose');
-const {Schema} = mongoose;
+const mongoose = require('mongoose');
 
+const agendamentoSchema = new mongoose.Schema({
+  observacao: { type: String, required: true },
+  status: { type: String, required: true },
+  servico: { type: String, required: true },
+  clienteNome: { type: String, required: true },
+  data: { type: Date, required: true },
+  horario: { type: String, required: true }
+});
 
-const agendamentoSchema = new Schema({
-    observacao:{type: String,require: true},
-    status: {type: String,require: true},
-    servico:{type: String,require: true}
-})
-const agendamento = mongoose.model('agendamento',agendamentoSchema);
-module.exports = agendamento;
+const Agendamento = mongoose.model('Agendamento', agendamentoSchema);
+module.exports = Agendamento;
