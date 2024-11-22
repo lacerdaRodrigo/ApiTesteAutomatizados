@@ -3,6 +3,26 @@ const User = require('../models/userModel');
 module.exports = class UserController {
     static async createUser(req, res) {
         const { nome, telefone, email, dataNas } = req.body;
+
+
+        if(!nome || !telefone || !email || !dataNas){
+            return res.status(400).json({error: 'Todos os campos são obrigatorio'});
+        }
+
+        if(!/^\d+$/.test(telefone)){
+            return res.status(400).json({error: 'Telefone de conter apenas números'});
+        }
+
+        if(!/\S+@\S+\.\S+/.test(email)){
+            return res.status(400).json({error: 'Email Inválido.'});
+        }
+
+        const dataNascimento = new Date(dataNas);
+        if(isNaN(dataNascimento) || dataNascimento > new Date()){
+            return res.status(400).json({error: 'Data nascimento inválida'});
+        }
+
+
         try {
             const nomeExistente = await User.findOne({ nome });
             if (nomeExistente) {

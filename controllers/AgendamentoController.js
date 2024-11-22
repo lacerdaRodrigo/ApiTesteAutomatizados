@@ -1,5 +1,5 @@
 const Agendamento = require('../models/agendamentoModel');
-
+//FAZER A REGRA DE NEGOCIO AQUI !!!!
 module.exports = class AgendamentoController {
     static async createAgendamento(req, res) {
         const { observacao, status, servico } = req.body;
