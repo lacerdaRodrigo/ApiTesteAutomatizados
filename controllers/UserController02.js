@@ -1,4 +1,4 @@
-const User = require('../models/userModel');
+const User = require('../models/userModel02');
 
 // Função para converter data do formato ddMMyyyy para yyyy-MM-dd
 function formatDate(data) {
