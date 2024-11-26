@@ -1,108 +1,58 @@
-const User = require('../models/userModel');
+const jwt = require('jsonwebtoken');
+const Login = require('../models/loginModel');
+const bcrypt = require('bcrypt');
+const createUserToken = require('../helpers/create-login-token')
 
-// Função para converter data do formato ddMMyyyy para yyyy-MM-dd
-function formatDate(data) {
-    const day = data.substring(0, 2);
-    const month = data.substring(2, 4);
-    const year = data.substring(4, 8);
-    return `${year}-${month}-${day}`;
-}
+module.exports = class LoginController {
+  static async createLogin(req, res) {
+    const { usuario, senha, confirmaSenha, email, telefone } = req.body;
 
-function iisValidDate(data) {
-
-
-
-    if (!/^\d{8}$/.test(data)) {
-        return false;
+    if (!usuario) {
+      return res.status(422).json({ error: 'Usuário é obrigatório.' });
     }
-    const day = parseInt(data.substring(0, 2), 10);
-    const month = parseInt(data.substring(2, 4), 10);
-    const year = parseInt(data.substring(4, 8), 10);
-
-    if (day < 1 || day > 31 || month < 1 || month > 12 || year < 1900 || year > new Date().getFullYear()) {
-        return false;
+    if (!senha) {
+      return res.status(422).json({ error: 'Senha é obrigatória.' });
     }
-    const date = new Date(`${year}-${month}-${day}`);
-    return date.getDate() === day && date.getMonth() + 1 === month && date.getFullYear() === year;
-}
-
-
-
-
-module.exports = class UserController {
-    static async createUser(req, res) {
-        const { nome, telefone, email, dataNas } = req.body;
-
-        // Validação de entrada
-        if (!nome || !telefone || !email || !dataNas) {
-            return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
-        }
-
-        if (!/^\d+$/.test(telefone)) {
-            return res.status(400).json({ error: 'Telefone deve conter apenas números.' });
-        }
-
-        if (!/\S+@\S+\.\S+/.test(email)) {
-            return res.status(400).json({ error: 'Email inválido.' });
-        }
-
-        // Converter data de nascimento para o formato esperado
-        const formattedDate = formatDate(dataNas);
-        const dataNascimento = new Date(formattedDate);
-        if (isNaN(dataNascimento) || dataNascimento > new Date()) {
-            return res.status(400).json({ error: 'Data de nascimento inválida.' });
-        }
-
-        try {
-            const nomeExistente = await User.findOne({ nome });
-            if (nomeExistente) {
-                return res.status(400).json({ error: 'Nome já existe.' });
-            }
-
-            const user = new User({ nome, telefone, email, dataNas: formattedDate });
-            await user.save();
-            res.status(201).json(user);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
+    if (!confirmaSenha) {
+      return res.status(422).json({ error: 'A confirmação de senha é obrigatória.' });
+    }
+    if (!email) {
+      return res.status(422).json({ error: 'E-mail é obrigatório.' });
+    }
+    if (!telefone) {
+      return res.status(422).json({ error: 'Telefone é obrigatório.' });
     }
 
-    static async getUsers(req, res) {
-        try {
-            const users = await User.find();
-            res.status(200).json(users);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
+    if (senha !== confirmaSenha) {
+      return res.status(422).json({ message: 'A senha e a confirmação de senha precisam ser iguais.' });
     }
 
-    static async deleteUserNome(req, res) {
-        try {
-            const user = await User.findOneAndDelete({ nome: req.params.nome });
-            if (!user) {
-                return res.status(404).json({ error: 'Usuário não encontrado.' });
-            }
-            res.status(200).json({ message: 'Usuário deletado com sucesso.' });
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
+    const loginExistente = await Login.findOne({ email });
+
+    if (loginExistente) {
+      return res.status(422).json({
+        message: 'Por favor, utilize outro e-mail.'
+      });
     }
 
-    static async updateUserNameById(req, res) {
-        try {
-            const currentName = req.body.currentName;
-            const newName = req.body.newName;
-            const updateUser = await User.findOneAndUpdate(
-                { nome: currentName },
-                { nome: newName },
-                { new: true, runValidators: true }
-            );
-            if (!updateUser) {
-                return res.status(404).json({ error: 'Usuário não encontrado.' });
-            }
-            res.status(200).json(updateUser);
-        } catch (error) {
-            res.status(500).json({ error: error.message });
-        }
+    // Criar Senha
+    const salt = await bcrypt.genSalt(12);
+    const senhaHash = await bcrypt.hash(senha, salt);
+
+    // Criar Login
+    const login = new Login({
+      usuario,
+      senha: senhaHash,
+      email,
+      telefone
+    });
+
+    try {
+      const novoLogin = await login.save();
+
+      await createUserToken(novoLogin, req, res)
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
+  }
 };
