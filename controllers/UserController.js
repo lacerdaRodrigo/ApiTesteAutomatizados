@@ -1,6 +1,9 @@
 const createUserToken = require('../helpers/create-user-token');
+const getToken = require('../helpers/get-token');
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
+
 
 module.exports = class UserController {
     //Post Criar Usuario do Sistema
@@ -86,8 +89,25 @@ module.exports = class UserController {
 
 
     // Verificar login pelo tokem
+    static async checkUser(req,res){
+        let currentUser
 
-    static 
+        console.log(req.headers.authorization)
+
+        if(req.headers.authorization){
+
+            const token = getToken(req)
+            const decoded = jwt.verify(token,'nossosecret')
+
+            currentUser = await User.findById(decoded.id)
+            currentUser.password = undefined
+
+        }else{
+            currentUser = null
+        }
+
+        res.status(200).send(currentUser)
+    }
 
 
 
