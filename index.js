@@ -6,7 +6,7 @@ require('./configBd/db');
 app.use(express.json());
 app.use(cors({ origin: '*' }));
 
-const userRoutes = require('./routes/UserRoutes');
+const userRoutes = require('./routes/userRoutes');
 const AgendamentoRoutes = require('./routes/AgendamentoRoutes');
 app.use('/', AgendamentoRoutes)
 app.use('/users', userRoutes);
