@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 
 module.exports = class UserController {
-    //Post Criar Usuario do Sistema
+    //POST Criar Usuario do Sistema
     static async register(req, res) {
         const { name, email, password, confirmpassword, phone } = req.body;
 
@@ -61,7 +61,7 @@ module.exports = class UserController {
 
 
 
-    //post Login do sistema com usuario criado
+    //POST Login do sistema com usuario criado
     static async login(req,res){
         const {email,password} = req.body
 
@@ -88,7 +88,11 @@ module.exports = class UserController {
     }
 
 
-    // Verificar login pelo tokem
+
+
+
+
+    // GET Verificar login pelo tokem
     static async checkUser(req,res){
         let currentUser
 
