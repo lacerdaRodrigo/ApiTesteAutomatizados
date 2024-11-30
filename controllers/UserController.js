@@ -128,6 +128,16 @@ module.exports = class UserController {
 
         res.status(200).json({user})
     }
+
+
+
+
+
+
+    // PATH atualizar dados do Usuario
+    static async editUser(req,res){
+        return res.status(200).json({message: 'Deu certo update!'});
+    }
     
 
 
