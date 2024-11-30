@@ -1,5 +1,6 @@
 const createUserToken = require('../helpers/create-user-token');
 const getToken = require('../helpers/get-token');
+const getUserByToken = require('../helpers/get-user-by-token')
 const User = require('../models/userModel');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
@@ -32,9 +33,9 @@ module.exports = class UserController {
         }
 
         //ver se o usuario existe
-        const userExists = await User.findOne({email:email})
-        if (userExists){
-            return res.status(422).json({message: "Por Favor , Utilize outro Email. esse email Já existe na nossa base"})
+        const userExists = await User.findOne({ email: email })
+        if (userExists) {
+            return res.status(422).json({ message: "Por Favor , Utilize outro Email. esse email Já existe na nossa base" })
         }
 
         //Criptografar senha no banco
@@ -51,9 +52,9 @@ module.exports = class UserController {
         try {
             const newUser = await user.save()
             await createUserToken(newUser, req, res)
-            
+
         } catch (error) {
-            res.status(500).json({message: error})
+            res.status(500).json({ message: error })
         }
 
     }
@@ -62,8 +63,8 @@ module.exports = class UserController {
 
 
     //POST Login do sistema com usuario criado
-    static async login(req,res){
-        const {email,password} = req.body
+    static async login(req, res) {
+        const { email, password } = req.body
 
         if (!email) {
             return res.status(422).json({ error: 'Email é obrigatória.' });
@@ -72,19 +73,19 @@ module.exports = class UserController {
             return res.status(422).json({ error: 'Senha é obrigatória.' });
         }
 
-        const user = await User.findOne({email:email})
+        const user = await User.findOne({ email: email })
 
-        if (!user){
-            return res.status(422).json({message: "Não há usuario cadastrado com este e-mail"})
+        if (!user) {
+            return res.status(422).json({ message: "Não há usuario cadastrado com este e-mail" })
         }
 
         //checar senha com banco de dados 
         const checkPassword = await bcrypt.compare(password, user.password)
 
-        if(!checkPassword){
-            return res.status(422).json({message: "Senha invalida"})
+        if (!checkPassword) {
+            return res.status(422).json({ message: "Senha invalida" })
         }
-        await createUserToken(user, req,res)
+        await createUserToken(user, req, res)
     }
 
 
@@ -93,20 +94,20 @@ module.exports = class UserController {
 
 
     // GET Verificar login pelo tokem
-    static async checkUser(req,res){
+    static async checkUser(req, res) {
         let currentUser
 
         console.log(req.headers.authorization)
 
-        if(req.headers.authorization){
+        if (req.headers.authorization) {
 
             const token = getToken(req)
-            const decoded = jwt.verify(token,'nossosecret')
+            const decoded = jwt.verify(token, 'nossosecret')
 
             currentUser = await User.findById(decoded.id)
             currentUser.password = undefined
 
-        }else{
+        } else {
             currentUser = null
         }
 
@@ -117,16 +118,16 @@ module.exports = class UserController {
 
 
     // GET verificar login com ID
-    static async getUserById(req,res){
-        
+    static async getUserById(req, res) {
+
         const id = req.params.id
         const user = await User.findById(id).select('-password')
 
-        if(!user){
-          return  res.status(422).json({message: 'Usuario não encontrado'})
+        if (!user) {
+            return res.status(422).json({ message: 'Usuario não encontrado' })
         }
 
-        res.status(200).json({user})
+        res.status(200).json({ user })
     }
 
 
@@ -135,10 +136,100 @@ module.exports = class UserController {
 
 
     // PATH atualizar dados do Usuario
-    static async editUser(req,res){
-        return res.status(200).json({message: 'Deu certo update!'});
+    static async editUser(req, res) {
+        const id = req.params.id;
+
+        const token = getToken(req)
+        const user = await getUserByToken(token)
+
+        const { name, email, password, confirmpassword , phone } = req.body;
+
+        //validação
+        if (!name) {
+            return res.status(422).json({ error: 'Nome é obrigatório.' });
+        }
+        if (!email) {
+            return res.status(422).json({ error: 'Email é obrigatória.' });
+        }
+
+        //Checar se o Usuario não esta usando mesmo email que ja esta cadastrado no sistema
+        const userExists = await User.findOne({ email: email })
+        if (!user.email !== email && userExists) {
+            return res.status(422).json({ message: 'Utilize outro email , esse ja esta em nossa base de dados' })
+        }
+        user.email = email
+
+        if (!phone) {
+            return res.status(422).json({ error: 'Telefone é obrigatório.' });
+        }
+        user.phone = phone;
+
+        if(password != confirmpassword){
+          return  res.status(422).json({message: 'As Senhas não são iguais'})
+        } else if(password === confirmpassword && password != null){
+            const salt = await bcrypt.genSalt(12)
+            const passwordHash = await bcrypt.hash(password, salt)
+
+            user.password = passwordHash
+        }
+
+        try {
+            const updateUser = await User.findByIdAndUpdate(
+                {_id: user._id},
+                { $set: user},
+                {new: true}
+            )
+
+            return res.status(200).json({message: 'Usuario atualizado com sucesso!'})
+            
+        } catch (error) {
+            
+            return res.status(500).json({message: error})
+        }
+
+
+
     }
-    
+
+
+
+
+
+    //GET pegar todos os usuarios cadastrados no sistema
+    static async getUser(req,res){
+        
+        const user = await User.find()
+
+        try {
+            return res.status(200).json(user);
+        } catch (error) {
+            res.status(500).json({ error: 'Não encontramos ninguem cadastrado' });
+        }
+            
+        
+    }
+
+
+
+
+
+
+
+    //DELETAR usuario
+    static async deleteUser(req,res){
+
+        try {
+            const { id } = req.params;
+            const user = await User.findByIdAndDelete(id);
+            if (!user) {
+                return res.status(404).json({ error: 'Usuario não encontrado.' });
+            }
+            res.status(200).json({ message: 'Usuario deletado com sucesso.' });
+        } catch (error) {
+            res.status(500).json({ error: 'error.message' });
+        }
+    }
+
 
 
 
