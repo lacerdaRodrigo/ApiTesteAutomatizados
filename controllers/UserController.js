@@ -12,20 +12,22 @@ module.exports = class UserController {
         const { name, email, password, confirmpassword, phone } = req.body;
 
         if (!name) {
-            return res.status(422).json({ error: 'Nome é obrigatório.' });
+            return res.status(422).json({ message: 'Nome é obrigatório.' });
         }
         if (!email) {
-            return res.status(422).json({ error: 'Email é obrigatória.' });
+            return res.status(422).json({ message: 'Email é obrigatório.' });
         }
         if (!password) {
-            return res.status(422).json({ error: 'Senha é obrigatória.' });
+            return res.status(422).json({ message: 'Senha é obrigatória.' });
+        }
+
+        if (!confirmpassword) {
+            return res.status(422).json({ message: 'Digite a senha igual a anterior.' });
         }
         if (!phone) {
-            return res.status(422).json({ error: 'Telefone é obrigatório.' });
+            return res.status(422).json({ message: 'Telefone é obrigatório.' });
         }
-        if (!confirmpassword) {
-            return res.status(422).json({ error: 'Digite a senha igual a anterior' });
-        }
+        
 
 
         if (password !== confirmpassword) {
