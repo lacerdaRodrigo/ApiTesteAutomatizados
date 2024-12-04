@@ -10,7 +10,7 @@ const createUserToken = async (user, req, res) => {
     }, "nossosecret")
 
     //retorno token
-    res.status(200).json({message:'Você está autenticado', token: token, userId: user._id})
+    res.status(200).json({name: user.name ,message:'Você está autenticado', token: token, userId: user._id})
 }
 
 module.exports = createUserToken
