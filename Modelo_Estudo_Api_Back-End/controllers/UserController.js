@@ -12,25 +12,51 @@ module.exports = class UserController {
         const { name, email, password, confirmpassword, phone } = req.body;
 
         if (!name) {
-            return res.status(422).json({ error: 'Nome é obrigatório.' });
-        }
-        if (!email) {
-            return res.status(422).json({ error: 'Email é obrigatória.' });
-        }
-        if (!password) {
-            return res.status(422).json({ error: 'Senha é obrigatória.' });
-        }
-        if (!phone) {
-            return res.status(422).json({ error: 'Telefone é obrigatório.' });
-        }
-        if (!confirmpassword) {
-            return res.status(422).json({ error: 'Digite a senha igual a anterior' });
+            return res.status(422).json({ message: 'Nome é obrigatório.' });
         }
 
+        //Validar email
+        const validaEmail = (email) => {
+            const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return regex.test(email);
+        }
+        if (!email) {
+            return res.status(422).json({ message: 'Email é obrigatório.' });
+        } else if (!validaEmail(email)) {
+            return res.status(422).json({ message: 'Email inválido. Certifique-se de que ele contenha "@" e ".com".' });
+        }
+
+
+        //Validar Senha
+        const validarPassword = (password) =>{
+            const regex = /^(?=.*[A-Z])(?=.*\d).+$/
+            return regex.test(password)
+        }
+        if (!password) {
+            return res.status(422).json({ message: 'Senha é obrigatória.' });
+        }else if (!validarPassword(password)){
+            return res.status(422).json({ message: 'Senha deve conter pelo menos uma letra maiúscula e um número.' });
+        }
+
+        if (!confirmpassword) {
+            return res.status(422).json({ message: 'Digite a senha igual a anterior.' });
+        }
+
+        //validar telefone
+        const validaPhone = (phone) =>{
+            const regex = /^\d{9}$/;
+            return regex.test(phone)
+        }
+        if (!phone) {
+            return res.status(422).json({ message: 'Telefone é obrigatório.' });
+        }else if(!validaPhone(phone)){
+            return res.status(422).json({message: 'Telefone deve ter exatamente 9 dígitos.'})
+        }
 
         if (password !== confirmpassword) {
             return res.status(422).json({ message: 'A senha e a confirmação de senha precisam ser iguais.' });
         }
+
 
         //ver se o usuario existe
         const userExists = await User.findOne({ email: email })
@@ -95,24 +121,28 @@ module.exports = class UserController {
 
     // GET Verificar login pelo tokem
     static async checkUser(req, res) {
-        let currentUser
-
-        console.log(req.headers.authorization)
-
+        let currentUser;
+    
+        console.log(req.headers.authorization);
+    
         if (req.headers.authorization) {
-
-            const token = getToken(req)
-            const decoded = jwt.verify(token, 'nossosecret')
-
-            currentUser = await User.findById(decoded.id)
-            currentUser.password = undefined
-
+            try {
+                const token = getToken(req);
+                const decoded = jwt.verify(token, 'nossosecret');
+    
+                currentUser = await User.findById(decoded.id);
+                currentUser.password = undefined;
+    
+                res.status(200).send(currentUser);
+            } catch (error) {
+                return res.status(401).json({ message: 'Token inválido ou não autorizado.' });
+            }
         } else {
-            currentUser = null
+            currentUser = null;
+            res.status(200).send(currentUser);
         }
-
-        res.status(200).send(currentUser)
     }
+    
 
 
 
@@ -142,7 +172,7 @@ module.exports = class UserController {
         const token = getToken(req)
         const user = await getUserByToken(token)
 
-        const { name, email, password, confirmpassword , phone } = req.body;
+        const { name, email, password, confirmpassword, phone } = req.body;
 
         //validação
         if (!name) {
@@ -164,9 +194,9 @@ module.exports = class UserController {
         }
         user.phone = phone;
 
-        if(password != confirmpassword){
-          return  res.status(422).json({message: 'As Senhas não são iguais'})
-        } else if(password === confirmpassword && password != null){
+        if (password != confirmpassword) {
+            return res.status(422).json({ message: 'As Senhas não são iguais' })
+        } else if (password === confirmpassword && password != null) {
             const salt = await bcrypt.genSalt(12)
             const passwordHash = await bcrypt.hash(password, salt)
 
@@ -175,16 +205,16 @@ module.exports = class UserController {
 
         try {
             const updateUser = await User.findByIdAndUpdate(
-                {_id: user._id},
-                { $set: user},
-                {new: true}
+                { _id: user._id },
+                { $set: user },
+                { new: true }
             )
 
-            return res.status(200).json({message: 'Usuario atualizado com sucesso!'})
-            
+            return res.status(200).json({ message: 'Usuario atualizado com sucesso!' })
+
         } catch (error) {
-            
-            return res.status(500).json({message: error})
+
+            return res.status(500).json({ message: error })
         }
 
 
@@ -196,8 +226,8 @@ module.exports = class UserController {
 
 
     //GET pegar todos os usuarios cadastrados no sistema
-    static async getUser(req,res){
-        
+    static async getUser(req, res) {
+
         const user = await User.find()
 
         try {
@@ -205,8 +235,8 @@ module.exports = class UserController {
         } catch (error) {
             res.status(500).json({ error: 'Não encontramos ninguem cadastrado' });
         }
-            
-        
+
+
     }
 
 
@@ -216,7 +246,7 @@ module.exports = class UserController {
 
 
     //DELETAR usuario
-    static async deleteUser(req,res){
+    static async deleteUser(req, res) {
 
         try {
             const { id } = req.params;
