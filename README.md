@@ -99,8 +99,7 @@ module.exports = mongoose;
 ### Endpoints login usuario ( login ) 
 
 - **POST** `http://localhost:5000/users/login` - Login no sistema
--  **GET** `http://localhost:5000/users/checkuser` - Login no sistema por token que foi gerado no login ( para usar vai em Authorization e user Beares Token e cole o token ) 
--  
+-  **GET** `http://localhost:5000/users/checkuser` - Login no sistema por token que foi gerado no login para usar vai em Authorization e user Beares Token e cole o token.
 
 ### Json para Post-Login
 ```
