@@ -4,14 +4,6 @@
 
 Uma API de estudo com front-end e back-end integrados, ideal para testes de automação de front-end e back-end usando várias linguagens. Este projeto utiliza MongoDB como banco de dados para armazenar todos os tipos de dados do sistema.
 
-## Índice
-
-- [Instalação](#instalação)
-- [Uso](#uso)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
-- [Contato](#contato)
-
 ## Instalação
 
 ### Pré-requisitos
