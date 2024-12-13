@@ -8,9 +8,9 @@ Uma API de estudo com front-end e back-end integrados, ideal para testes de auto
 
 ### Pré-requisitos
 
-- Node.js
-- npm
-- MongoDB
+- Node.js ( https://nodejs.org/en/download/prebuilt-installer/current )
+- npm ( npm install -g npm )
+- MongoDB ( npm install mongodb )
 
 ### Passos para Instalação
 
