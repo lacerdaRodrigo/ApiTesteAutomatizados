@@ -7,9 +7,11 @@ app.use(express.json());
 app.use(cors({ origin: '*' }));
 
 const userRoutes = require('./routes/UserRoutes');
-const AgendamentoRoutes = require('./routes/AgendamentoRoutes');
-app.use('/', AgendamentoRoutes)
+//const AgendamentoRoutes = require('./routes/AgendamentoRoutes');
+const GastosPorVeiculoRoutes = require('./routes/GastosPorVeiculoRoutes');
+//app.use('/', AgendamentoRoutes);
 app.use('/users', userRoutes);
+app.use('', GastosPorVeiculoRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
