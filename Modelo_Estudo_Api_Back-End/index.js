@@ -11,7 +11,7 @@ const userRoutes = require('./routes/UserRoutes');
 const GastosPorVeiculoRoutes = require('./routes/GastosPorVeiculoRoutes');
 //app.use('/', AgendamentoRoutes);
 app.use('/users', userRoutes);
-app.use('', GastosPorVeiculoRoutes);
+app.use('/gastosporveiculo', GastosPorVeiculoRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

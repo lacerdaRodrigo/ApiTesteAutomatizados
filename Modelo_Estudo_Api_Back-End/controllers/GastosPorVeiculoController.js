@@ -23,13 +23,14 @@ module.exports = class GastosPorVeiculoController {
         }
     }
 
-    // static async getGastosPorVeiculo(req,res){
-    //     const gastosPorVeiculo = await GastosPorVeiculo.find()
+    static async getGastosPorVeiculo(req,res){
 
-    //     try {
-    //         return res.status(200).json(gastosPorVeiculo);
-    //     } catch (error) {
-    //         res.status(500).json({ error: 'Não encontramos ninguem cadastrado' });
-    //     }
-    // }
+        const newGastosPorVeiculo = await GastoPorVeiculo.find({})
+        
+        try {
+            return res.status(200).json(newGastosPorVeiculo);
+        } catch (error) {
+            res.status(500).json({ error: 'Não encontramos ninguem cadastrado' });
+        }
+    }
 }
